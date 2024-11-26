@@ -1,0 +1,83 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+option go_package = "example.com/networkpolicy/myservice";
+
+package myservice;
+
+service HealthCheckService {
+    rpc CheckHealth(HealthReq) returns (HealthResp);
+}
+
+service UserService {
+    rpc GetUsers (google.protobuf.Empty) returns (GetUsersResp) {}
+}
+  
+message User {
+   int64 id = 1;
+   string name = 2;
+}
+  
+message GetUsersRequest {
+    repeated int64 ids = 1; 
+}
+    
+message GetUsersResp {
+    repeated User users = 1;
+    Status status = 2; 
+}
+
+message HealthReq {
+    string request_info = 1;
+}
+
+message HealthResp {
+    string message = 1;
+    Status status = 2;
+}
+
+
+
+message Status 
+{
+   StatusCode status_code  = 1;
+   StatusDescription status_description = 2; 
+}
+
+enum StatusCode 
+{
+   UNSPECIFIED = 0;
+   SUCCESS = 1;
+   FAILURE = 2;
+}
+
+message StatusDescription
+{
+   DescriptionCode description_code = 1;
+   string description = 2;
+}
+
+enum DescriptionCode
+{
+   NOT_SPECIFIED = 0;
+   INVALID_ARGUMENT = 1;  
+
+   OK = 200;
+   CREATED = 201;
+   ACCEPTED = 202;
+   NO_CONTENT = 204;
+
+   BAD_REQUEST = 400;
+   UNAUTHORIZED = 401;
+   FORBIDDEN = 403;
+   NOT_FOUND = 404;
+
+   INTERNAL_SERVER_ERROR = 500;
+   NOT_IMPLEMENTED = 501;
+   BAD_GATEWAY = 502;
+   SERVICE_UNAVAILABLE = 503;
+   GATEWAY_TIMEOUT = 504;
+}
+
+
